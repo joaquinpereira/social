@@ -2,17 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::view('/', 'welcome')->name('home');
+//statuses routes
+Route::get('statuses','App\Http\Controllers\StatusesController@index')->name('statuses.index');
+Route::post('statuses','App\Http\Controllers\StatusesController@store')->name('statuses.store')->middleware('auth');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//statuses crelikes routes
+Route::post('statuses/{status}/likes','App\Http\Controllers\StatusLikesController@store')->name('statuses.likes.store')->middleware('auth');
+
+Route::auth();
+
