@@ -23,10 +23,12 @@ class StatusResourceTest extends TestCase
 
         $statusResource = StatusResource::make($status)->resolve();
 
+        $this->assertEquals($status->id, $statusResource['id']);
         $this->assertEquals($status->body, $statusResource['body']);
         $this->assertEquals($status->user->name, $statusResource['user_name']);
         $this->assertEquals('http://social/avatar.png', $statusResource['user_avatar']);
         $this->assertEquals($status->created_at->diffForHumans(), $statusResource['ago']);
+        $this->assertEquals(false, $statusResource['is_liked']);
 
     }
 }
