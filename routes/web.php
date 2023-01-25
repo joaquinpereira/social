@@ -9,6 +9,7 @@ Route::post('statuses','App\Http\Controllers\StatusesController@store')->name('s
 
 //statuses crelikes routes
 Route::post('statuses/{status}/likes','App\Http\Controllers\StatusLikesController@store')->name('statuses.likes.store')->middleware('auth');
+Route::delete('statuses/{status}/likes','App\Http\Controllers\StatusLikesController@destroy')->name('statuses.likes.destroy')->middleware('auth');
 
 Route::auth();
 

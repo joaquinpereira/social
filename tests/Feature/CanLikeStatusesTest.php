@@ -12,7 +12,6 @@ class CanLikeStatusesTest extends TestCase
 {
     use RefreshDatabase;
     /**
-     * A basic feature test example.
      * @test
      * @return void
      */
@@ -39,5 +38,21 @@ class CanLikeStatusesTest extends TestCase
         $response->assertRedirect('login');
     }
 
+    /** @test */
+    public function an_authenticated_user_can_unlike_statuses(){
+
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $status = Status::factory()->create();
+        $this->actingAs($user)->postJson(route('statuses.likes.store', $status));
+
+        $this->actingAs($user)->deleteJson(route('statuses.likes.destroy', $status));
+
+        $this->assertDatabaseMissing('likes', [
+            'user_id' => $user->id,
+            'status_id' => $status->id,
+        ]);
+    }
 
 }
