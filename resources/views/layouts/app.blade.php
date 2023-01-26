@@ -14,7 +14,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
         <div class="container">
-          <a class="navbar-brand" href="{{ route('home') }}">SocialApp</a>
+          <a class="navbar-brand" href="{{ route('home') }}">
+            <i class="fa fa-users text-primary mr-1"></i>
+            SocialApp
+          </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
