@@ -10,5 +10,12 @@ export default {
         guest(){
             return ! this.isAutenticated;
         }
-    }
+    },
+    methods: {
+        redirectIfGuest(){
+            if(this.guest){
+                return window.location.href = "/login";
+            }
+        }
+    },
 }

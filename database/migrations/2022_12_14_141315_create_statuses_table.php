@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('body');
+            $table->text('body');
             $table->timestamps();
         });
     }

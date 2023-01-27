@@ -18,7 +18,7 @@ class UsersCanSeeAllStatusesTest extends DuskTestCase
      */
     public function users_can_see_all_statuses_on_the_homepage()
     {
-        $statuses = Status::factory(3)->create();
+        $statuses = Status::factory(3)->create(['created_at' => now()->subMinutes(3)]);
 
         $this->browse(function (Browser $browser) use ($statuses) {
             $browser->visit('/')
@@ -26,9 +26,8 @@ class UsersCanSeeAllStatusesTest extends DuskTestCase
 
                 foreach($statuses as $status){
                 $browser->assertSee($status->body)
-                    ->assertSee($status->user->name);
-                        //Por falta de recursos de pc esto explota y da un falso failure
-                        //->assertSee($status->created_at->diffForHumans());
+                    ->assertSee($status->user->name)
+                    ->assertSee($status->created_at->diffForHumans());
                 }
         });
     }
