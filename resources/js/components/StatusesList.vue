@@ -12,7 +12,7 @@
                 <p class="card-text text-secondary" v-text="status.body"></p>
 
             </div>
-            <div class="car-footer p-2">
+            <div class="car-footer p-2 d-flex justify-content-between align-items-center">
                 <button
                     v-if="status.is_liked"
                     @click="unlike(status)"
@@ -26,10 +26,13 @@
                     @click="like(status)"
                     class="btn btn-link btn-sm"
                     dusk="like-btn">
-                    <i class="far fa-thumbs-o-up text-primary mr-1"></i>
+                    <i class="far fa-thumbs-o-up text-primary me-1"></i>
                     ME GUSTA
                 </button>
-                <span dusk="likes-count">{{ status.likes_count }}</span>
+                <div class="text-secondary me-2">
+                    <i class="far fa-thumbs-o-up me-1"></i>
+                    <span dusk="likes-count">{{ status.likes_count }}</span>
+                </div>
             </div>
         </div>
     </div>
