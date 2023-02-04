@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Http\Resources;
 
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\StatusResource;
+use App\Models\Comment;
 use App\Models\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 //use PHPUnit\Framework\TestCase;
@@ -21,6 +23,8 @@ class StatusResourceTest extends TestCase
     {
         $status = Status::factory()->create();
 
+        Comment::factory(2)->create(['status_id' => $status->id]);
+
         $statusResource = StatusResource::make($status)->resolve();
 
         $this->assertEquals($status->id, $statusResource['id']);
@@ -30,6 +34,8 @@ class StatusResourceTest extends TestCase
         $this->assertEquals($status->created_at->diffForHumans(), $statusResource['ago']);
         $this->assertEquals(false, $statusResource['is_liked']);
         $this->assertEquals(0, $statusResource['likes_count']);
+        $this->assertEquals(CommentResource::class, $statusResource['comments']->collects);
+        $this->assertInstanceOf(Comment::class, $statusResource['comments']->first()->resource);
 
     }
 }

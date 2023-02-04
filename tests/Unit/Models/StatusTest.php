@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Status;
 use App\Models\User;
@@ -101,5 +102,21 @@ class StatusTest extends TestCase
 
         $this->assertEquals(2, $status->likesCount());
 
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_status_has_many_comments(){
+
+        $status = Status::factory()->create();
+
+        Comment::factory()->create([
+            'status_id' => $status->id,
+        ]);
+
+        $this->assertInstanceOf(Comment::class, $status->comments->first());
     }
 }
