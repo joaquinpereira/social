@@ -25,8 +25,12 @@ class UserCanCommentStatusTest extends DuskTestCase
             $comment = "Mi primer comentario";
             $browser
                 ->visit('/')
-                ->waitForText($status->body)
-                ->assertSee($comments->shift()->body);
+                ->waitForText($status->body);
+
+            foreach($comments as $comment){
+                $browser->assertSee($comment->body)
+                    ->assertSee($comment->user->name);
+            }
         });
     }
 

@@ -16,6 +16,8 @@ class CommentResource extends JsonResource
     {
         return [
             'body' => $this->body,
+            'user_name' => $this->user->name,
+            'user_avatar' => 'http://social/avatar.png'
         ];
     }
 }
