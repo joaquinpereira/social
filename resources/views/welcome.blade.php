@@ -7,7 +7,7 @@
                 <div class="card border-0 bg-light mb-3 shadow-sm">
                     <status-form />
                 </div>
-                <statuses-list />
+                <status-list />
             </div>
         </div>
     </div>

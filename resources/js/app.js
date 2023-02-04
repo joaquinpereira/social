@@ -19,9 +19,9 @@ import mitt from 'mitt';
 const emitter = mitt();
 
 import StatusForm from './components/StatusForm.vue';
-import StatusesList from './components/StatusesList.vue';
+import StatusesList from './components/StatusList.vue';
 app.component('status-form', StatusForm);
-app.component('statuses-list', StatusesList);
+app.component('status-list', StatusesList);
 
 import auth from './mixins/auth';
 app.mixin(auth);
