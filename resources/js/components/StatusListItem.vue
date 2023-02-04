@@ -22,16 +22,34 @@
                 <i class="far fa-thumbs-o-up me-1"></i>
                 <span dusk="likes-count">{{ status.likes_count }}</span>
             </div>
+        </div>
+        <div class="card-footer">
+            <div v-for="comment in comments" class="mb-3 d-flex justify-content-between align-items-center">
+                <img class="avatar_comment rounded shadow-sm float-left me-2" :src="comment.user_avatar" :alt="comment.user_name"/>
 
-            <form @submit.prevent="addComment">
-                <textarea name="comment" v-model="newComment"></textarea>
-                <button dusk="comment-btn">Enviar</button>
-            </form>
-
-            <div v-for="comment in comments">
-                {{ comment.user_name }}
-                {{ comment.body }}
+                <div class="card border-0 shadow-sm info_comment">
+                    <div class="card-body p-2 text-secondary">
+                        <a href="#"><strong>{{ comment.user_name }}</strong></a>
+                        {{ comment.body }}
+                    </div>
+                </div>
             </div>
+            <form v-if="isAutenticated" @submit.prevent="addComment">
+                <div class="d-flex align-items-center">
+
+                    <img class="avatar_comment rounded shadow-sm float-left me-2" src="http://social/avatar.png" :alt="currentUser.name"/>
+
+                    <textarea
+                        v-model="newComment"
+                        class="form-control border-0 me-2 shadow-sm"
+                        name="comment"
+                        placeholder="Escribe un comentario..."
+                        rows="1"
+                    ></textarea>
+
+                    <button class="btn btn-primary" dusk="comment-btn">Enviar</button>
+                </div>
+            </form>
         </div>
     </div>
 </template>
@@ -63,3 +81,15 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+
+</style><style lang="scss" scoped>
+    .avatar_comment{
+        width: 32px;
+    }
+
+    .info_comment{
+        width: 100%;
+    }
+</style>
