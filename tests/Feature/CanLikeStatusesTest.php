@@ -11,6 +11,16 @@ use Tests\TestCase;
 class CanLikeStatusesTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function guests_users_can_not_like_statuses(){
+
+        $status = Status::factory()->create();
+        $response = $this->postJson(route('statuses.likes.store',$status));
+
+        $response->assertStatus(401);
+    }
+
     /**
      * @test
      * @return void
@@ -27,15 +37,6 @@ class CanLikeStatusesTest extends TestCase
             'user_id' => $user->id,
             'status_id' => $status->id,
         ]);
-    }
-
-    /** @test */
-    public function guests_users_can_not_like_statuses(){
-
-        $status = Status::factory()->create();
-        $response = $this->post(route('statuses.likes.store',$status));
-
-        $response->assertRedirect('login');
     }
 
     /** @test */
