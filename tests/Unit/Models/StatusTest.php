@@ -29,14 +29,14 @@ class StatusTest extends TestCase
      *
      * @return void
      */
-    public function a_status_has_many_likes(){
+    public function a_status_morph_many_likes(){
         $user = User::factory()->create();
 
         $status = Status::factory()->create();
 
         Like::factory()->create([
-            'status_id' => $status->id,
-            'user_id' => $user->id
+            'likeable_id' => $status->id,
+            'likeable_type' => get_class($status)
         ]);
 
         $this->assertInstanceOf(Like::class, $status->likes->first());
@@ -57,10 +57,8 @@ class StatusTest extends TestCase
         $this->assertEquals(0, $status->fresh()->likes->count());
     }
 
-        /**
+    /**
      * @test
-     *
-     * @return void
      */
     public function a_status_can_be_liked_once(){
         $user = User::factory()->create();
@@ -74,8 +72,6 @@ class StatusTest extends TestCase
 
     /**
      * @test
-     *
-     * @return void
      */
     public function a_status_knows_if_it_has_been_liked(){
 
@@ -90,15 +86,16 @@ class StatusTest extends TestCase
 
     /**
      * @test
-     *
-     * @return void
      */
     public function a_status_knows_how_many_likes_it_has(){
 
         $status = Status::factory()->create();
         $this->assertEquals(0, $status->likesCount());
 
-        Like::factory(2)->create(['status_id' => $status->id]);
+        Like::factory(2)->create([
+            'likeable_id' => $status->id,
+            'likeable_type' => get_class($status)
+        ]);
 
         $this->assertEquals(2, $status->likesCount());
 
