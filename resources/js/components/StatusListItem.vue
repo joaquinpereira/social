@@ -2,9 +2,9 @@
     <div class="card border-0 mb-3 shadow-sm" >
         <div class="card-body d-flex flex-column">
             <div class="d-flex align-items-center mb-3">
-                <img class="rounded me-3 shadow" width="40" src="http://social/avatar.png" alt="">
+                <img class="rounded me-3 shadow" width="40" :src="status.user_avatar" alt="">
                 <div class="">
-                    <h5 class="mb-1" v-text="status.user_name"></h5>
+                    <h5 class="mb-1"><a :href="status.user_link" v-text="status.user_name"></a></h5>
                     <div class="small text-muted" v-text="status.ago"></div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     <div class="flex-grow-1">
                         <div class="card border-0 shadow-sm mb-1">
                             <div class="card-body p-2 text-secondary">
-                                <a href="#"><strong>{{ comment.user_name }}</strong></a>
+                                <a :href="comment.user_link"><strong>{{ comment.user_name }}</strong></a>
                                 {{ comment.body }}
                             </div>
                         </div>
@@ -55,7 +55,7 @@
             <form v-if="isAutenticated" @submit.prevent="addComment">
                 <div class="d-flex align-items-center">
 
-                    <img class="avatar_comment rounded shadow-sm float-left me-2" src="http://social/avatar.png" :alt="currentUser.name"/>
+                    <img class="avatar_comment rounded shadow-sm float-left me-2" :src="current.user_avatar" :alt="currentUser.name"/>
 
                     <textarea
                         v-model="newComment"

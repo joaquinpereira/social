@@ -41,4 +41,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
+
+    public function link()
+    {
+        return route('users.show', $this);
+    }
+
+    public function avatar()
+    {
+        return 'http://social/avatar.png';
+    }
 }
