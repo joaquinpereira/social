@@ -14,7 +14,9 @@
         <div class="car-footer p-2 d-flex justify-content-between align-items-center">
 
             <like-btn
-                :status="status"
+                dusk="like-btn"
+                :url="`/statuses/${status.id}/likes`"
+                :model="status"
                 :key="status.id"
             ></like-btn>
 
@@ -33,6 +35,13 @@
                         {{ comment.body }}
                     </div>
                 </div>
+                <span dusk="comment-likes-count">{{comment.likes_count}}</span>
+                <like-btn
+                    dusk="comment-like-btn"
+                    :url="`/comments/${comment.id}/likes`"
+                    :model="comment"
+                    :key="comment.id"
+                ></like-btn>
             </div>
             <form v-if="isAutenticated" @submit.prevent="addComment">
                 <div class="d-flex align-items-center">

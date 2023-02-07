@@ -1,20 +1,10 @@
 <template>
     <div>
         <button
-            v-if="status.is_liked"
-            @click="unlike(status)"
-            class="btn btn-link btn-sm"
-            dusk="unlike-btn" >
-            <i class="fa fa-thumbs-up text-primary mr-1"></i>
-            <strong>TE GUSTA</strong>
-        </button>
-        <button
-            v-else
-            @click="like(status)"
-            class="btn btn-link btn-sm"
-            dusk="like-btn">
-            <i class="far fa-thumbs-o-up text-primary me-1"></i>
-            ME GUSTA
+            @click="togleLike()"
+            :class="getBtnTogleClass">
+            <i :class="getIconClasses"></i>
+            {{getBtnText}}
         </button>
     </div>
 </template>
@@ -22,26 +12,44 @@
 <script>
     export default {
         props:{
-            status: {
+            model: {
                 type: Object,
+                required: true
+            },
+            url:{
+                type: String,
                 required: true
             }
         },
         methods: {
-            like(status){
-                axios.post(`/statuses/${status.id}/likes`)
+            togleLike(){
+                let method = this.model.is_liked ? 'delete' : 'post';
+                axios[method](this.url)
                 .then(res =>{
-                    status.is_liked = true;
-                    status.likes_count++;
+                    this.model.is_liked = !this.model.is_liked;
+                    if(method === 'post')
+                        this.model.likes_count++;
+                    else
+                        this.model.likes_count--;
                 })
             },
-            unlike(status){
-                axios.delete(`/statuses/${status.id}/likes`)
-                .then(res =>{
-                    status.is_liked = false;
-                    status.likes_count--;
-                })
-            }
         },
+        computed: {
+            getBtnText(){
+                return this.model.is_liked ? 'TE GUSTA' : 'ME GUSTA';
+            },
+            getBtnTogleClass(){
+                return [
+                    this.model.is_liked ? 'font-weight-bold' : '',
+                    'btn', 'btn-link', 'btn-sm',
+                ]
+            },
+            getIconClasses(){
+                return [
+                    this.model.is_liked ? 'far fa-thumbs-o-up' : 'fa fa-thumbs-up',
+                    'text-primary', 'me-1',
+                ]
+            }
+        }
     }
 </script>
