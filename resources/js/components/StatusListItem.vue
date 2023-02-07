@@ -26,22 +26,31 @@
             </div>
         </div>
         <div class="card-footer">
-            <div v-for="comment in comments" class="mb-3 d-flex justify-content-between align-items-center">
-                <img class="avatar_comment rounded shadow-sm float-left me-2" :src="comment.user_avatar" :alt="comment.user_name"/>
+            <div v-for="comment in comments" class="mb-3">
+                <div class="d-flex">
+                    <img class="avatar_comment rounded shadow-sm me-2" :src="comment.user_avatar" :alt="comment.user_name"/>
+                    <div class="flex-grow-1">
+                        <div class="card border-0 shadow-sm mb-1">
+                            <div class="card-body p-2 text-secondary">
+                                <a href="#"><strong>{{ comment.user_name }}</strong></a>
+                                {{ comment.body }}
+                            </div>
+                        </div>
+                        <small class="badge badge-pill bg-primary py-1 px-2 mt-1 pull-right rounded-4" dusk="comment-likes-count">
+                            <i class="fa fa-thumbs-up"></i>
+                            {{comment.likes_count}}
+                        </small>
 
-                <div class="card border-0 shadow-sm info_comment">
-                    <div class="card-body p-2 text-secondary">
-                        <a href="#"><strong>{{ comment.user_name }}</strong></a>
-                        {{ comment.body }}
+                        <like-btn
+                            dusk="comment-like-btn"
+                            :url="`/comments/${comment.id}/likes`"
+                            :model="comment"
+                            :key="comment.id"
+                            class="comments-like-btn"
+                        ></like-btn>
+
                     </div>
                 </div>
-                <span dusk="comment-likes-count">{{comment.likes_count}}</span>
-                <like-btn
-                    dusk="comment-like-btn"
-                    :url="`/comments/${comment.id}/likes`"
-                    :model="comment"
-                    :key="comment.id"
-                ></like-btn>
             </div>
             <form v-if="isAutenticated" @submit.prevent="addComment">
                 <div class="d-flex align-items-center">
@@ -96,13 +105,9 @@
 </script>
 
 <style lang="scss" scoped>
-
-</style><style lang="scss" scoped>
     .avatar_comment{
         width: 32px;
+        height: 32px;
     }
 
-    .info_comment{
-        width: 100%;
-    }
 </style>

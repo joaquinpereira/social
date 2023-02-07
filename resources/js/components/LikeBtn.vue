@@ -53,3 +53,9 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+    .comments-like-btn{
+        button{ padding-left: 0 !important};
+    }
+
+</style>
