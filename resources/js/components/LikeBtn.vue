@@ -1,6 +1,7 @@
 <template>
     <div>
         <button
+            :name="btn"
             @click="togleLike()"
             :class="getBtnTogleClass">
             <i :class="getIconClasses"></i>
@@ -17,6 +18,10 @@
                 required: true
             },
             url:{
+                type: String,
+                required: true
+            },
+            btn:{
                 type: String,
                 required: true
             }
