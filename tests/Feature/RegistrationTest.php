@@ -60,6 +60,34 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
+    public function the_name_must_be_unique()
+    {
+        User::factory()->create(['name' => 'JhonDoe']);
+
+        $response = $this->post(route('register'), $this->userValidData(['name' => 'JhonDoe']));
+
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function the_name_may_only_contains_letters_and_numbers()
+    {
+        $response = $this->post(route('register'), $this->userValidData(['name' => 'Jhon Doe']));
+
+        $response = $this->post(route('register'), $this->userValidData(['name' => 'JhonDoe<>']));
+
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function the_name_must_be_at_least_3_characters()
+    {
+        $response = $this->post(route('register'), $this->userValidData(['name' => 'as']));
+
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
     public function the_first_name_is_required()
     {
         $response = $this->post(route('register'), $this->userValidData(['first_name' => null]));
@@ -85,6 +113,24 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
+    public function the_first_name_must_be_at_least_3_characters()
+    {
+        $response = $this->post(route('register'), $this->userValidData(['first_name' => 'as']));
+
+        $response->assertSessionHasErrors('first_name');
+    }
+
+    /** @test */
+    public function the_first_name_may_only_contains_letters()
+    {
+        $response = $this->post(route('register'), $this->userValidData(['first_name' => 'Jhon1']));
+
+        $response = $this->post(route('register'), $this->userValidData(['first_name' => 'JhonDoe<>']));
+
+        $response->assertSessionHasErrors('first_name');
+    }
+
+    /** @test */
     public function the_last_name_is_required()
     {
         $response = $this->post(route('register'), $this->userValidData(['last_name' => null]));
@@ -105,6 +151,24 @@ class RegistrationTest extends TestCase
     public function the_last_name_may_not_be_greater_than_255_characters()
     {
         $response = $this->post(route('register'), $this->userValidData(['last_name' => Random::generate(256)]));
+
+        $response->assertSessionHasErrors('last_name');
+    }
+
+    /** @test */
+    public function the_last_name_must_be_at_least_3_characters()
+    {
+        $response = $this->post(route('register'), $this->userValidData(['last_name' => 'as']));
+
+        $response->assertSessionHasErrors('last_name');
+    }
+
+    /** @test */
+    public function the_last_name_may_only_contains_letters()
+    {
+        $response = $this->post(route('register'), $this->userValidData(['last_name' => 'Jhon1']));
+
+        $response = $this->post(route('register'), $this->userValidData(['last_name' => 'JhonDoe<>']));
 
         $response->assertSessionHasErrors('last_name');
     }
