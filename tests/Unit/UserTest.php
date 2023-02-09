@@ -2,12 +2,15 @@
 
 namespace Tests\Unit;
 
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function route_key_name_is_set_to_name()
     {
@@ -33,4 +36,13 @@ class UserTest extends TestCase
         $this->assertEquals('http://social/avatar.png', $user->avatar);
     }
 
+    /** @test */
+    public function a_users_has_many_statuses()
+    {
+        $user = User::factory()->create();
+
+        Status::factory()->create(['user_id' => $user->id]);
+
+        $this->assertInstanceOf(Status::class, $user->statuses->first());
+    }
 }

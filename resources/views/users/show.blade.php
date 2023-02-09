@@ -13,11 +13,14 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="card bg-light shadow-sm">
+                <status-list
+                    url="{{route('users.statuses.index', $user)}}"
+                ></status-list>
+                {{-- <div class="card bg-light shadow-sm">
                     <div class="card-body">
 
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

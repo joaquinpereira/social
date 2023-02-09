@@ -22,5 +22,8 @@ Route::delete('comments/{comment}/likes', 'App\Http\Controllers\CommentsLikesCon
 // Users routes
 Route::get('@{user}', 'App\Http\Controllers\UsersController@show')->name('users.show');
 
+// Users statuses routes
+Route::get('users/{user}/statuses','App\Http\Controllers\UsersStatusController@index')->name('users.statuses.index');
+
 Route::auth();
 
