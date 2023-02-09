@@ -15,4 +15,12 @@ class FriendShipsController extends Controller
             'recipient_id' => $recipient->id
         ]);
     }
+
+    public function destroy(User $recipient)
+    {
+        FriendShip::where([
+            'sender_id' => auth()->id(),
+            'recipient_id' => $recipient->id
+        ])->delete();
+    }
 }

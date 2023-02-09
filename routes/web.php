@@ -27,9 +27,11 @@ Route::get('users/{user}/statuses','App\Http\Controllers\UsersStatusController@i
 
 // Friendships routes
 Route::post('friendships/{recipient}', 'App\Http\Controllers\FriendShipsController@store')->name('friendships.store');
+Route::delete('friendships/{recipient}', 'App\Http\Controllers\FriendShipsController@destroy')->name('friendships.destroy');
 
-// Request Friendships routes
-Route::post('request-friendships/{sender}','App\Http\Controllers\RequestFriendShipsController@store')->name('request-friendships.store');
+// Accept Friendships routes
+Route::post('accept-friendships/{sender}','App\Http\Controllers\AcceptFriendShipsController@store')->name('accept-friendships.store');
+Route::delete('accept-friendships/{sender}','App\Http\Controllers\AcceptFriendShipsController@destroy')->name('accept-friendships.destroy');
 
 Route::auth();
 
