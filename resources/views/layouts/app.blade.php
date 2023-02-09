@@ -33,6 +33,7 @@
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
                 @guest
                     <li class="nav-item">
+                        <a href="{{ route('register')}} " class="nav-link">Register</a>
                         <a href="{{ route('login')}} " class="nav-link">Login</a>
                     </li>
                 @else
@@ -41,8 +42,7 @@
                         {{ Auth::user()->name }}
                         </a>
                         <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="{{ route('users.show', Auth::user())}}">Perfil</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a onclick="document.getElementById('logout').submit()" class="dropdown-item" href="#">Cerrar sesión</a></li>
                         </ul>

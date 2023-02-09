@@ -30,6 +30,7 @@ class UserTest extends TestCase
         $user = User::factory()->make();
 
         $this->assertEquals('http://social/avatar.png', $user->avatar());
+        $this->assertEquals('http://social/avatar.png', $user->avatar);
     }
 
 }
