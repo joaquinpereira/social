@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Status;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeed extends Seeder
@@ -17,6 +17,9 @@ class UsersTableSeed extends Seeder
     {
         User::truncate();
 
-        User::factory()->create(['email'=>'jorge@email.com']);
+        $user = User::factory()->create(['email'=>'Joaquin@email.com','name'=>'Joaquin']);
+
+        Status::factory(3)->create(['user_id' => $user->id]);
+        Status::factory(10)->create();
     }
 }

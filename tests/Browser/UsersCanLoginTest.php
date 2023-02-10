@@ -37,6 +37,7 @@ class UsersCanLoginTest extends DuskTestCase
                 ->type('email','')
                 ->type('password','secret_pass')
                 ->press('#login-btn')
+                ->pause(800)
                 ->assertPathIs('/login')
                 ->assertPresent('.invalid-feedback')
             ;

@@ -10,9 +10,13 @@ class FriendShipsController extends Controller
 {
     public function store(User $recipient)
     {
-        FriendShip::create([
+        FriendShip::firstOrCreate([
             'sender_id' => auth()->id(),
             'recipient_id' => $recipient->id
+        ]);
+
+        return response()->json([
+            'friendship_status' => 'pending'
         ]);
     }
 
@@ -22,5 +26,9 @@ class FriendShipsController extends Controller
             'sender_id' => auth()->id(),
             'recipient_id' => $recipient->id
         ])->delete();
+
+        return response()->json([
+            'friendship_status' => 'deleted'
+        ]);
     }
 }
