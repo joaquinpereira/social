@@ -22,7 +22,7 @@ class CanRequestFriendshipTest extends TestCase
     }
 
     /** @test */
-    public function a_can_create_friendship_request_once()
+    public function sender_a_can_create_friendship_request_once()
     {
 
         $sender = User::factory()->create();
@@ -42,7 +42,7 @@ class CanRequestFriendshipTest extends TestCase
     }
 
     /** @test */
-    public function can_create_friendship_request()
+    public function sender_can_create_friendship_request()
     {
         $this->withoutExceptionHandling();
 
@@ -90,6 +90,34 @@ class CanRequestFriendshipTest extends TestCase
     }
 
     /** @test */
+    public function senders_cannot_delete_dennied_friendship_request()
+    {
+        $this->withoutExceptionHandling();
+
+        $sender = User::factory()->create();
+
+        $recipient = User::factory()->create();
+
+        FriendShip::create([
+            'sender_id' => $sender->id,
+            'recipient_id' => $recipient->id,
+            'status' => 'denied'
+        ]);
+
+        $response = $this->actingAs($sender)->deleteJson(route('friendships.destroy', $recipient));
+
+        $response->assertJson([
+            'friendship_status' => 'denied'
+        ]);
+
+        $this->assertDatabaseHas('friendships', [
+            'sender_id' => $sender->id,
+            'recipient_id' => $recipient->id,
+            'status' => 'denied'
+        ]);
+    }
+
+    /** @test */
     public function recipients_can_delete_recieved_friendship_request()
     {
         $this->withoutExceptionHandling();
@@ -126,7 +154,7 @@ class CanRequestFriendshipTest extends TestCase
     }
 
     /** @test */
-    public function can_accept_friendship_request()
+    public function recipients_can_accept_friendship_request()
     {
         $this->withoutExceptionHandling();
 
@@ -163,7 +191,7 @@ class CanRequestFriendshipTest extends TestCase
     }
 
     /** @test */
-    public function can_deny_friendship_request()
+    public function recipients_can_deny_friendship_request()
     {
         $this->withoutExceptionHandling();
 

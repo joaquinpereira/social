@@ -35,7 +35,7 @@
                     })
             },
             getMethod(){
-                if(this.friendship_status === 'pending')
+                if(this.friendship_status === 'pending' || this.friendship_status === 'accepted')
                     return 'delete';
                 return 'post';
             }
@@ -44,6 +44,10 @@
             getText(){
                 if(this.friendship_status === 'pending')
                     return 'Cancelar solicitud';
+                if(this.friendship_status === 'accepted')
+                    return 'Eliminar de mis amigos';
+                if(this.friendship_status === 'denied')
+                    return 'Solicitud denegada';
                 return 'Solicitar amistad';
             }
         }

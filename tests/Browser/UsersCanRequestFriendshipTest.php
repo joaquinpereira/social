@@ -34,6 +34,56 @@ class UsersCanRequestFriendshipTest extends DuskTestCase
     }
 
     /** @test */
+    public function senders_can_delete_accepted_frienship_requests()
+    {
+        $sender = User::factory()->create();
+        $recipient = User::factory()->create();
+
+        FriendShip::create([
+            'sender_id' => $sender->id,
+            'recipient_id' => $recipient->id,
+            'status' => 'accepted'
+        ]);
+
+        $this->browse(function (Browser $browser) use ($sender, $recipient) {
+            $browser->loginAs($sender)
+                ->visit(route('users.show', $recipient))
+                ->assertSee('Eliminar de mis amigos')
+                ->press('#request-friendship')
+                ->waitForText('Solicitar amistad')
+                ->assertSee('Solicitar amistad')
+                ->visit(route('users.show', $recipient))
+                ->assertSee('Solicitar amistad')
+            ;
+        });
+    }
+
+     /** @test */
+     public function senders_cannot_delete_deny_frienship_requests()
+     {
+         $sender = User::factory()->create();
+         $recipient = User::factory()->create();
+
+         FriendShip::create([
+             'sender_id' => $sender->id,
+             'recipient_id' => $recipient->id,
+             'status' => 'denied'
+         ]);
+
+         $this->browse(function (Browser $browser) use ($sender, $recipient) {
+             $browser->loginAs($sender)
+                 ->visit(route('users.show', $recipient))
+                 ->assertSee('Solicitud denegada')
+                 ->press('#request-friendship')
+                 ->waitForText('Solicitud denegada')
+                 ->assertSee('Solicitud denegada')
+                 ->visit(route('users.show', $recipient))
+                 ->assertSee('Solicitud denegada')
+             ;
+         });
+     }
+
+    /** @test */
     public function recipients_can_accept_frienship_requests()
     {
         $sender = User::factory()->create();
