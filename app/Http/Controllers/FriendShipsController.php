@@ -10,25 +10,28 @@ class FriendShipsController extends Controller
 {
     public function store(User $recipient)
     {
-        FriendShip::firstOrCreate([
+        $friendship = FriendShip::firstOrCreate([
             'sender_id' => auth()->id(),
             'recipient_id' => $recipient->id
         ]);
 
         return response()->json([
-            'friendship_status' => 'pending'
+            'friendship_status' => $friendship->fresh()->status
         ]);
     }
 
-    public function destroy(User $recipient)
+    public function destroy(User $user)
     {
-        FriendShip::where([
+        $deleted = FriendShip::where([
             'sender_id' => auth()->id(),
-            'recipient_id' => $recipient->id
+            'recipient_id' => $user->id
+        ])->orWhere([
+            'sender_id' => $user->id,
+            'recipient_id' => auth()->id()
         ])->delete();
 
         return response()->json([
-            'friendship_status' => 'deleted'
+            'friendship_status' => $deleted ? 'deleted' : ''
         ]);
     }
 }
