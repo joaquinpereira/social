@@ -21,9 +21,11 @@ const emitter = mitt();
 import StatusForm from './components/StatusForm.vue';
 import StatusesList from './components/StatusList.vue';
 import FriendshipBtn from './components/FriendshipBtn.vue';
+import AcceptFriendshipBtn from './components/AcceptFriendshipBtn.vue';
 app.component('status-form', StatusForm);
 app.component('status-list', StatusesList);
 app.component('friendship-btn', FriendshipBtn);
+app.component('accept-friendship-btn', AcceptFriendshipBtn);
 
 import auth from './mixins/auth';
 app.mixin(auth);

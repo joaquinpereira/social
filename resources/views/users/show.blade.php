@@ -8,7 +8,7 @@
                 <div class="card bg-light shadow-sm">
                     <img src="{{$user->avatar}}" alt="{{$user->name}}" class="card-img-top">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $user->name }} - {{ $friendshipStatus }}</h5>
+                        <h5 class="card-title">{{ $user->name }}</h5>
                         <friendship-btn
                             class="btn btn-primary w-100"
                             id="request-friendship"
