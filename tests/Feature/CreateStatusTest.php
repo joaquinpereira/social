@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Events\StatusCreated;
+use App\Http\Resources\StatusResource;
+use App\Models\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class CreateStatusTest extends TestCase
@@ -22,19 +25,23 @@ class CreateStatusTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_create_statuses()
     {
-        $this->withoutExceptionHandling();
-        //1 given
+        Event::fake([StatusCreated::class]);
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        //2 When
         $response = $this->postJson(route('statuses.store',['body'=>'Mi primer status']));
+
+        Event::assertDispatched(StatusCreated::class, function ($e){
+            return $e->status->id === Status::first()->id
+                && get_class($e->status) === StatusResource::class
+            ;
+        });
 
         $response->assertJson([
             'data' => ['body' =>'Mi primer status']
         ]);
 
-        //3 Then
         $this->assertDatabaseHas('statuses',[
             'user_id' => $user->id,
             'body' => 'Mi primer status'
