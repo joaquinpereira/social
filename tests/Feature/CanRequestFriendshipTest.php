@@ -64,6 +64,23 @@ class CanRequestFriendshipTest extends TestCase
     }
 
     /** @test */
+    public function sender_cannot_send_friendship_request_to_itself()
+    {
+
+        $sender = User::factory()->create();
+
+        $response = $this->actingAs($sender)->postJson(route('friendships.store', $sender));
+
+        $response->assertStatus(400);
+
+        $this->assertDatabaseMissing('friendships', [
+            'sender_id' => $sender->id,
+            'recipient_id' => $sender->id,
+            'status' => 'pending',
+        ]);
+    }
+
+    /** @test */
     public function senders_can_delete_friendship_request()
     {
         $this->withoutExceptionHandling();
@@ -178,6 +195,14 @@ class CanRequestFriendshipTest extends TestCase
             'recipient_id' => $recipient->id,
             'status' => 'accepted',
         ]);
+    }
+
+    /** @test */
+    public function guests_users_cannot_visit_friendship_index()
+    {
+        $response = $this->get(route('accept-friendships.index'));
+
+        $response->assertRedirect('login');
     }
 
     /** @test */

@@ -25,6 +25,7 @@
         },
         methods:{
             toggleFriendshipRequest(){
+                this.redirectIfGuest();
                 let method = this.getMethod();
                 axios[method](`friendships/${this.recipient.name}`)
                     .then(res => {
