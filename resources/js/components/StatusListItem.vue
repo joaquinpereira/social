@@ -91,6 +91,11 @@
                 comments: this.status.comments
             }
         },
+        mounted(){
+            window.Echo.channel(`statuses.${this.status.id}.comments`).listen('CommentCreated', e => {
+                this.comments.push(e.comment);
+            });
+        },
         methods:{
             addComment(){
                 axios.post(`/statuses/${this.status.id}/comments`, {body: this.newComment})
