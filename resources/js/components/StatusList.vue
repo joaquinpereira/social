@@ -7,7 +7,6 @@
                 :key="status.id"
             ></status-list-item>
         </transition-group>
-
     </div>
 </template>
 
