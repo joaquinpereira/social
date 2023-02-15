@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import StatusListItem from './StatusListItem.vue';
+import StatusListItem from './StatusListItem.vue';
     export default {
         components:{ StatusListItem },
         props: {
@@ -31,6 +31,10 @@
 
             this.emitter.on('status-created', status => {
                 this.statuses.unshift(status);
+            });
+
+            window.Echo.channel('statuses').listen('StatusCreated', e => {
+                this.statuses.unshift(e.status);
             });
 
         },
