@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome')->name('home');
 //statuses routes
 Route::get('statuses','App\Http\Controllers\StatusesController@index')->name('statuses.index');
+Route::get('statuses/{status}','App\Http\Controllers\StatusesController@show')->name('statuses.show');
 Route::post('statuses','App\Http\Controllers\StatusesController@store')->name('statuses.store')->middleware('auth');
 
 //statuses likes routes

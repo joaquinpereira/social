@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class CanLikeCommentsTest extends TestCase
@@ -17,7 +18,7 @@ class CanLikeCommentsTest extends TestCase
      */
     public function guests_users_can_not_like_commenst()
     {
-        $comment = Comment::factory()->create();
+        $comment = Comment::factory()->create()->first();
         $response = $this->postJson(route('comments.likes.store', $comment));
 
         $response->assertStatus(401);
@@ -29,10 +30,12 @@ class CanLikeCommentsTest extends TestCase
      */
     public function an_authenticated_user_can_like_and_unlike_comments()
     {
+        Notification::fake();
+
         $this->withoutExceptionHandling();
 
-        $user = User::factory()->create();
-        $comment = Comment::factory()->create();
+        $user = User::factory()->create()->first();
+        $comment = Comment::factory()->create()->first();
 
         $this->assertCount(0, $comment->likes);
 

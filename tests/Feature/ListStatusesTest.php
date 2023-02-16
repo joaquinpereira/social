@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ListStatusesTest extends TestCase
@@ -46,7 +45,7 @@ class ListStatusesTest extends TestCase
     /** @test */
     public function can_get_statuses_for_a_specific_user()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->first();
 
         Status::factory()->create(['user_id' => $user->id, 'created_at' => now()->subDays(2)]);
         $status = Status::factory()->create(['user_id' => $user->id, 'created_at' => now()->subDays()]);
@@ -71,5 +70,14 @@ class ListStatusesTest extends TestCase
             $status->body,
             $response->json('data.0.body')
         );
+    }
+
+    /** @test */
+    public function can_see_individual_status()
+    {
+        $status = Status::factory()->create();
+
+        $response = $this->get($status->path());
+        $response->assertSee($status->body);
     }
 }

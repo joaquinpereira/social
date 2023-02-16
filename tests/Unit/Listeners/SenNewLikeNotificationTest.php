@@ -19,8 +19,8 @@ class SenNewLikeNotificationTest extends TestCase
     {
         Notification::fake();
 
-        $statusOwner = User::factory()->create();
-        $likeSender = User::factory()->create();
+        $statusOwner = User::factory()->create()->first();
+        $likeSender = User::factory()->create()->first();
 
         $status = Status::factory()->create(['user_id' => $statusOwner->id]);
         $status->likes()->create([
@@ -32,7 +32,8 @@ class SenNewLikeNotificationTest extends TestCase
         Notification::assertSentTo(
             $statusOwner,
             NewLikeNotification::class,
-            function($notification, $chanels) use($likeSender, $status){
+            function($notification, $channels) use($likeSender, $status){
+                $this->assertContains('database', $channels);
                 $this->assertTrue($notification->likeSender->is($likeSender));
                 $this->assertTrue($notification->model->is($status));
                 return true;
