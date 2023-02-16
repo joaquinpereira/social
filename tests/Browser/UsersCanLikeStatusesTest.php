@@ -12,11 +12,7 @@ class UsersCanLikeStatusesTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-     /**
-     * @test
-     *
-     * @throws Exception
-     */
+    /** @test */
     public function guest_users_cannot_like_statuses()
     {
         $status = Status::factory()->create();
@@ -30,11 +26,7 @@ class UsersCanLikeStatusesTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     *
-     * @throws Exception
-     */
+    /** @test */
     public function users_can_like_and_unlike_statuses()
     {
         $user = User::factory()->create();
@@ -58,5 +50,25 @@ class UsersCanLikeStatusesTest extends DuskTestCase
         });
     }
 
+    /** @test */
+    public function users_can_see_likes_in_real_time()
+    {
+        $user = User::factory()->create();
+        $status = Status::factory()->create();
 
+        $this->browse(function (Browser $browser1, Browser $browser2) use($user,$status) {
+            $browser1->visit('/');
+
+            $browser2
+                ->loginAs($user)
+                ->visit('/')
+                ->waitForText($status->body)
+                ->assertSeeIn('@likes-count',0)
+                ->press('@like-btn')
+                ->waitForText('TE GUSTA')
+            ;
+
+            $browser1->assertSeeIn('@likes-count',1);
+        });
+    }
 }

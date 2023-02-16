@@ -49,6 +49,11 @@
                 type: Object,
                 required: true
             }
+        },
+        mounted(){
+            window.Echo.channel(`statuses.${this.status.id}.likes`).listen('ModelLiked', e => {
+                this.status.likes_count++;
+            });
         }
     }
 </script>
