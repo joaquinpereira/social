@@ -46,6 +46,8 @@ class HasLikesTest extends TestCase
     /** @test */
     public function a_model_can_be_liked_and_unlike()
     {
+        Event::fake([ModelLiked::class,ModelUnliked::class]);
+
         $user = User::factory()->create();
         $model = ModelWithLikes::create();
         $this->actingAs($user);
@@ -58,6 +60,8 @@ class HasLikesTest extends TestCase
     /** @test */
     public function a_model_can_be_liked_once()
     {
+        Event::fake([ModelLiked::class]);
+
         $user = User::factory()->create();
         $model = ModelWithLikes::create();
         $this->actingAs($user);
@@ -70,6 +74,7 @@ class HasLikesTest extends TestCase
     /** @test */
     public function a_model_knows_if_it_has_been_liked()
     {
+        Event::fake([ModelLiked::class]);
 
         $model = ModelWithLikes::create();
         $this->assertFalse($model->isLiked());
