@@ -108,14 +108,14 @@ class HasLikesTest extends TestCase
         Event::fake([ModelLiked::class]);
         Broadcast::shouldReceive('socket')->andReturn('socket-id');
 
-        $user = User::factory()->create();
+        $likeSender = User::factory()->create();
         $model = ModelWithLikes::create();
-        $this->actingAs($user);
+        $this->actingAs($likeSender);
         $model->like();
 
-        Event::assertDispatched(ModelLiked::class, function ($event){
+        Event::assertDispatched(ModelLiked::class, function ($event) use($likeSender){
             $this->assertInstanceOf(ModelWithLikes::class, $event->model);
-
+            $this->assertTrue($event->likeSender->is($likeSender));
             $this->assertEventChaneltype('public',$event);
             $this->assertEventChanelName($event->model->eventChannelName(),$event);
             $this->assertDontBroadcastToCurrentUser($event);

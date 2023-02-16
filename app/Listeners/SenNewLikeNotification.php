@@ -27,6 +27,8 @@ class SenNewLikeNotification
      */
     public function handle(ModelLiked $event)
     {
-        $event->model->user->notify(new NewLikeNotification());
+        $event->model->user->notify(
+            new NewLikeNotification($event->model, $event->likeSender)
+        );
     }
 }
