@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Like;
 use App\Events\ModelLiked;
+use App\Events\ModelUnliked;
 use Illuminate\Support\Str;
 
 trait HasLikes
@@ -27,6 +28,8 @@ trait HasLikes
         $this->likes()->where([
             'user_id' => auth()->id()
         ])->delete();
+info('pasa por aqui');
+        ModelUnliked::dispatch($this);
     }
 
     public function isLiked()
