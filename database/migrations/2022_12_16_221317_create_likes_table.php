@@ -19,6 +19,10 @@ return new class extends Migration
             $table->morphs('likeable');
             $table->timestamps();
         });
+
+        Schema::create('model_with_likes', function($table){
+            $table->increments('id');
+        });
     }
 
     /**
@@ -29,5 +33,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('likes');
+        Schema::dropIfExists('model_with_likes');
     }
 };

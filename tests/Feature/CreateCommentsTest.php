@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Http\Resources\CommentResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Support\Facades\Event;
 use App\Events\CommentCreated;
 use Tests\TestCase;

@@ -12,7 +12,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    protected function assertClassUsesTrait($trait, $class)
+        protected function assertClassUsesTrait($trait, $class)
     {
         $this->assertArrayHasKey(
             $trait,
