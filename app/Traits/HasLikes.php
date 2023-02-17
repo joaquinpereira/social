@@ -28,7 +28,7 @@ trait HasLikes
         $this->likes()->where([
             'user_id' => auth()->id()
         ])->delete();
-info('pasa por aqui');
+
         ModelUnliked::dispatch($this);
     }
 
