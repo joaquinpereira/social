@@ -11,9 +11,7 @@
 </template>
 
 <script>
-import StatusListItem from './StatusListItem.vue';
     export default {
-        components:{ StatusListItem },
         props: {
             url: String
         },

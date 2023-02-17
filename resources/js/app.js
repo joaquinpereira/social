@@ -20,11 +20,13 @@ const emitter = mitt();
 
 import StatusForm from './components/StatusForm.vue';
 import StatusesList from './components/StatusList.vue';
+import StatusListItem from './components/StatusListItem.vue';
 import FriendshipBtn from './components/FriendshipBtn.vue';
 import AcceptFriendshipBtn from './components/AcceptFriendshipBtn.vue';
 import NotificationList from './components/NotificationList.vue';
 app.component('status-form', StatusForm);
 app.component('status-list', StatusesList);
+app.component('status-list-item', StatusListItem);
 app.component('friendship-btn', FriendshipBtn);
 app.component('accept-friendship-btn', AcceptFriendshipBtn);
 app.component('notification-list', NotificationList);
