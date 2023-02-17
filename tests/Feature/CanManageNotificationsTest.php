@@ -78,7 +78,7 @@ class CanManageNotificationsTest extends TestCase
             'read_at' => now()
         ]);
 
-        $response = $this->deleteJson(route('read-notifications.destroy', $notification));
+        $response = $this->actingAs($user)->deleteJson(route('read-notifications.destroy', $notification));
 
         $response->assertJson($notification->fresh()->toArray());
 

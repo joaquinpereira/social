@@ -172,4 +172,11 @@ class ModelWithLikes extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+
+
+	/**
+	 * @return mixed
+	 */
+	public function path() {
+	}
 }

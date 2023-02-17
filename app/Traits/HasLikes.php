@@ -46,4 +46,6 @@ trait HasLikes
     {
         return strtolower(Str::plural(class_basename($this))) . '.' . $this->getKey() . '.likes';
     }
+
+    abstract public function path();
 }
