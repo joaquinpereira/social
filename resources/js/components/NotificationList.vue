@@ -4,7 +4,7 @@
             dusk="notifications" href="#"
             :class="count ? 'text-primary fw-bold' : ''"
             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <slot></slot> {{ count }}
+            <slot></slot> <span dusk="notifications-count">{{ count }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
             <li v-for="notification in notifications">
@@ -28,6 +28,22 @@
             }
         },
         mounted(){
+
+            if(this.isAutenticated){
+                window.Echo.private(`App.Models.User.${this.currentUser.id}`)
+                    .notification(notification =>{
+                        this.count++;
+                        this.notifications.push({
+                            id: notification.id,
+                            data: {
+                                link: notification.link,
+                                message: notification.message,
+                            }
+                        });
+                    });
+            }
+
+
             axios.get('/notifications')
                 .then(res => {
                     this.notifications = res.data;

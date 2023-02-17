@@ -33,6 +33,8 @@ window.Echo = new Echo({
     forceTLS: false,
     disableStats: true,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER
+});
+
     // broadcaster: 'pusher',
     // key: import.meta.env.VITE_PUSHER_APP_KEY,
     // wsHost: import.meta.env.VITE_PUSHER_HOST ?? `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
@@ -40,4 +42,3 @@ window.Echo = new Echo({
     // wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
     // forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
     // enabledTransports: ['ws', 'wss'],
-});
