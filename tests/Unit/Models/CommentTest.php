@@ -12,9 +12,7 @@ class CommentTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_comment_belongs_to_a_user()
     {
         $comment = Comment::factory()->create();
@@ -22,11 +20,17 @@ class CommentTest extends TestCase
         $this->assertInstanceOf(User::class, $comment->user);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_comment_model_must_use_the_trait_has_like()
     {
         $this->assertClassUsesTrait(HasLikes::class, Comment::class);
+    }
+
+    /** @test */
+    public function a_commment_must_have_a_path()
+    {
+        $comment = Comment::factory()->create();
+
+        $this->assertEquals(route('statuses.show', $comment->id).'#comment-'.$comment->id, $comment->path());
     }
 }

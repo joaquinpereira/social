@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex">
+    <div :class="highlight" :id="`comment-${comment.id}`" class="d-flex">
         <img class="avatar_comment rounded shadow-sm me-2" :src="comment.user.avatar" :alt="comment.user.name"/>
         <div class="flex-grow-1">
             <div class="card border-0 shadow-sm mb-1">
@@ -46,6 +46,13 @@
                 this.comment.likes_count--;
             });
         },
+        computed:{
+            highlight(){
+                if(window.location.hash === `#comment-${this.comment.id}`){
+                    return 'highlight';
+                }
+            }
+        }
     }
 </script>
 
@@ -54,6 +61,12 @@
     .avatar_comment{
         width: 32px;
         height: 32px;
+    }
+
+    .highlight{
+        background-color: #ececec;
+        padding: 10px;
+        border-left: 4px solid #ff8d00;
     }
 
 </style>
