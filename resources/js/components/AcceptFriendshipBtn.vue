@@ -1,18 +1,24 @@
 <template>
-    <div>
-        <div v-if="friendship_status === 'pending'">
-            <span v-text="sender.name"></span> te ha enviado una solicitud de amistad
-            <button id="accept-friendship" @click="acceptFriendshipRequest">Aceptar solicitud</button>
-            <button id="deny-friendship" @click="denyFriendshipRequest">Denegar solicitud</button>
+    <div class="d-flex justify-content-between bg-light p-3 rounded mb-3 shadow-sm">
+        <div>
+            <div v-if="friendship_status === 'pending'">
+                <span v-text="sender.name"></span> te ha enviado una solicitud de amistad
+            </div>
+            <div v-if="friendship_status === 'accepted'">
+                Tú y <span v-text="sender.name"></span> son amigos
+            </div>
+            <div v-if="friendship_status === 'denied'">
+                Solicitud denegada de <span v-text="sender.name"></span>
+            </div>
+            <div v-if="friendship_status === 'deleted'">
+                Solicitud eliminada de <span v-text="sender.name"></span>
+            </div>
         </div>
-        <div v-else-if="friendship_status === 'accepted'">
-            Tú y <span v-text="sender.name"></span> son amigos
+        <div>
+            <button class="btn btn-sm btn-primary me-1" v-if="friendship_status === 'pending'" id="accept-friendship" @click="acceptFriendshipRequest">Aceptar solicitud</button>
+            <button class="btn btn-sm btn-warning me-1" v-if="friendship_status === 'pending'" id="deny-friendship" @click="denyFriendshipRequest">Denegar solicitud</button>
+            <button class="btn btn-sm btn-danger me-1" v-if="friendship_status !== 'deleted'" id="delete-friendship" @click="deleteFriendship">Eliminar</button>
         </div>
-        <div v-else-if="friendship_status === 'denied'">
-            Solicitud denegada de <span v-text="sender.name"></span>
-        </div>
-        <div v-if="friendship_status === 'deleted'">Solicitud eliminada</div>
-        <button v-else id="delete-friendship" @click="deleteFriendship">Eliminar</button>
     </div>
 
 </template>
