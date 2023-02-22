@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+use function React\Promise\Stream\first;
+
 class UserTest extends TestCase
 {
     use RefreshDatabase;
@@ -100,5 +102,24 @@ class UserTest extends TestCase
         $this->assertCount(1, $sender->friendshipRequestsSent);
         $this->assertCount(0, $sender->friendshipRequestsReceived);
         $this->assertInstanceOf(FriendShip::class, $sender->friendshipRequestsSent->first());
+    }
+
+    /** @test */
+    public function a_user_can_get_their_friends()
+    {
+        $sender = User::factory()->create();
+        $recipient = User::factory()->create();
+
+        $sender->sendFriendRequestTo($recipient);
+
+        $this->assertCount(0, $recipient->friends());
+        $this->assertCount(0, $sender->friends());
+
+        $recipient->acceptFriendRequestFrom($sender);
+
+        $this->assertCount(1, $recipient->friends());
+        $this->assertCount(1, $sender->friends());
+        $this->assertEquals($recipient->name, $sender->friends()->first()->name);
+        $this->assertEquals($sender->name, $recipient->friends()->first()->name);
     }
 }

@@ -12,16 +12,21 @@
             recipient:{
                 type: Object,
                 required: true,
-            },
-            friendshipStatus:{
-                type: String,
-                required: true
             }
         },
         data(){
             return {
-                friendship_status: this.friendshipStatus,
+                friendship_status: '',
             }
+        },
+        mounted() {
+            axios.get(`/friendships/${this.recipient.name}`)
+                .then(res => {
+                    this.friendship_status = res.data.friendship_status;
+                })
+                .catch(err => {
+                    console.log(err.response.data);
+                })
         },
         methods:{
             toggleFriendshipRequest(){
