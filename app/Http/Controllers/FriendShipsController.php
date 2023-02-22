@@ -5,20 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\FriendShip;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class FriendShipsController extends Controller
 {
-    public function store(User $recipient)
+    public function store(Request $request, User $recipient)
     {
         if(auth()->id() === $recipient->id){
             abort(400);
         }
 
-        $friendship = FriendShip::firstOrCreate([
-            'sender_id' => auth()->id(),
-            'recipient_id' => $recipient->id
-        ]);
+        $friendship = $request->user()->sendFriendRequestTo($recipient);
 
         return response()->json([
             'friendship_status' => $friendship->fresh()->status

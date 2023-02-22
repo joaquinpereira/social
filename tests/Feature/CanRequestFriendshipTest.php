@@ -198,6 +198,24 @@ class CanRequestFriendshipTest extends TestCase
     }
 
     /** @test */
+    public function recipients_can_get_friendship_request_received()
+    {
+        $this->withoutExceptionHandling();
+
+        $sender = User::factory()->create();
+        $recipient = User::factory()->create();
+
+        $sender->sendFriendRequestTo($recipient);
+        FriendShip::factory(2)->create();
+
+        $this->actingAs($recipient);
+
+        $response = $this->get(route('accept-friendships.index'));
+
+        $this->assertCount(1, $response->viewData('friendshipRequests'));
+    }
+
+    /** @test */
     public function guests_users_cannot_visit_friendship_index()
     {
         $response = $this->get(route('accept-friendships.index'));
