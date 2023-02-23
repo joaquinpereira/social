@@ -18,7 +18,7 @@ class UserResourceTest extends TestCase
      */
     public function a_user_resource_must_have_the_necessary_fields()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->first();
 
         $userResource = UserResource::make($user)->resolve();
 

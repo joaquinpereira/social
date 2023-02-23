@@ -13,9 +13,9 @@ class FriendShipTest extends TestCase
     /** @test */
     public function a_frienship_request_belongs_to_a_sender()
     {
-        $sender = User::factory()->create();
+        $sender = User::factory()->create()->first();
 
-        $frienship = FriendShip::factory()->create(['sender_id' => $sender->id]);
+        $frienship = FriendShip::factory()->create(['sender_id' => $sender->id])->first();
 
         $this->assertInstanceOf(User::class, $frienship->sender);
     }
@@ -23,9 +23,9 @@ class FriendShipTest extends TestCase
     /** @test */
     public function a_frienship_request_belongs_to_a_recipient()
     {
-        $recipient = User::factory()->create();
+        $recipient = User::factory()->create()->first();
 
-        $frienship = FriendShip::factory()->create(['recipient_id' => $recipient->id]);
+        $frienship = FriendShip::factory()->create(['recipient_id' => $recipient->id])->first();
 
         $this->assertInstanceOf(User::class, $frienship->recipient);
     }
@@ -33,8 +33,8 @@ class FriendShipTest extends TestCase
     /** @test */
     public function can_find_frienships_by_sender_and_recipient()
     {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
         FriendShip::factory(2)->create(['recipient_id' => $recipient->id]);
         FriendShip::factory(2)->create(['sender_id' => $sender->id]);

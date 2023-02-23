@@ -15,8 +15,8 @@ class UsersCanLikeCommentsTest extends DuskTestCase
     /** @test */
     public function users_can_like_and_unlike_comments()
     {
-        $user = User::factory()->create();
-        $comment = Comment::factory()->create();
+        $user = User::factory()->create()->first();
+        $comment = Comment::factory()->create()->first();
 
         $this->withoutExceptionHandling();
 
@@ -43,8 +43,8 @@ class UsersCanLikeCommentsTest extends DuskTestCase
     /** @test */
     public function users_can_like_and_unlike_comments_in_real_time()
     {
-        $user = User::factory()->create();
-        $comment = Comment::factory()->create();
+        $user = User::factory()->create()->first();
+        $comment = Comment::factory()->create()->first();
 
         $this->withoutExceptionHandling();
 

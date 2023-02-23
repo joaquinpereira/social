@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class CanLikeStatusesTest extends TestCase
@@ -26,13 +27,15 @@ class CanLikeStatusesTest extends TestCase
      */
     public function an_authenticated_user_can_like_and_unlike_statuses()
     {
-        $user = User::factory()->create();
-        $status = Status::factory()->create();
+        $user = User::factory()->create()->first();
+        $status = Status::factory()->create()->first();
+
+        $user_auth = Auth::loginUsingId($user->id);
 
         $this->assertCount(0, $status->likes);
 
         //like
-        $response = $this->actingAs($user)->postJson(route('statuses.likes.store', $status));
+        $response = $this->actingAs($user_auth)->postJson(route('statuses.likes.store', $status));
         $response->assertJsonFragment([
             'likes_count' => 1
         ]);
@@ -40,7 +43,7 @@ class CanLikeStatusesTest extends TestCase
         $this->assertDatabaseHas('likes', ['user_id' => $user->id,]);
 
         //unlike
-        $response = $this->actingAs($user)->deleteJson(route('statuses.likes.destroy', $status));
+        $response = $this->actingAs($user_auth)->deleteJson(route('statuses.likes.destroy', $status));
         $response->assertJsonFragment([
             'likes_count' => 0
         ]);

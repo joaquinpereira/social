@@ -17,7 +17,7 @@ class UserTest extends TestCase
     /** @test */
     public function route_key_name_is_set_to_name()
     {
-        $user = User::factory()->make();
+        $user = User::factory()->create()->first();
 
         $this->assertEquals('name', $user->getRouteKeyName(), 'the route key name must be name');
     }
@@ -25,7 +25,7 @@ class UserTest extends TestCase
     /** @test */
     public function user_has_a_link_to_their_profile()
     {
-        $user = User::factory()->make();
+        $user = User::factory()->create()->first();
 
         $this->assertEquals(route('users.show',$user),$user->link());
     }
@@ -33,7 +33,7 @@ class UserTest extends TestCase
     /** @test */
     public function user_has_an_avatar()
     {
-        $user = User::factory()->make();
+        $user = User::factory()->create()->first();
 
         $this->assertEquals('http://social/avatar.png', $user->avatar());
         $this->assertEquals('http://social/avatar.png', $user->avatar);
@@ -42,7 +42,7 @@ class UserTest extends TestCase
     /** @test */
     public function a_users_has_many_statuses()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->first();
 
         Status::factory()->create(['user_id' => $user->id]);
 
@@ -52,8 +52,8 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_can_send_friend_requests()
     {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
         $friendship = $sender->sendFriendRequestTo($recipient);
 
@@ -64,8 +64,8 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_can_accept_friend_requests()
     {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
         $sender->sendFriendRequestTo($recipient);
         $friendship = $recipient->acceptFriendRequestFrom($sender);
@@ -77,8 +77,8 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_can_deny_friend_requests()
     {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
         $sender->sendFriendRequestTo($recipient);
         $friendship = $recipient->denyFriendRequestFrom($sender);
@@ -90,8 +90,8 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_can_get_all_their_friend_requests()
     {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory(1)->create()->first();
+        $recipient = User::factory(1)->create()->first();
 
         $sender->sendFriendRequestTo($recipient);
 
@@ -107,8 +107,8 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_can_get_their_friends()
     {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
         $sender->sendFriendRequestTo($recipient);
 

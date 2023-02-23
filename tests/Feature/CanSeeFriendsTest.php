@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\FriendShip;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class CanSeeFriendsTest extends TestCase
@@ -21,8 +22,10 @@ class CanSeeFriendsTest extends TestCase
     /** @test */
     public function a_user_can_see_a_list_of_friends()
     {
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
+        $sender = Auth::loginUsingId($recipient->id);
+        $recipient = Auth::loginUsingId($recipient->id);
 
         FriendShip::factory()->create([
             'recipient_id' => $recipient->id,

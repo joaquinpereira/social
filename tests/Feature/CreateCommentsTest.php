@@ -7,6 +7,7 @@ use App\Models\Status;
 use App\Models\User;
 use App\Http\Resources\CommentResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Event;
 use App\Events\CommentCreated;
@@ -21,7 +22,7 @@ class CreateCommentsTest extends TestCase
      */
     public function guest_users_cannot_create_comments()
     {
-        $status = Status::factory()->create();
+        $status = Status::factory()->create()->first();
         $comment = ['body' => 'Mi primer comentario'];
 
         $response = $this->postJson(route('statuses.comments.store',$status), $comment);
@@ -34,8 +35,9 @@ class CreateCommentsTest extends TestCase
      */
     public function Authenticated_users_can_comment_statuses()
     {
-        $status = Status::factory()->create();
-        $user = User::factory()->create();
+        $status = Status::factory()->create()->first();
+        $user = User::factory()->create()->first();
+        $user = Auth::loginUsingId($user->id);
         $comment = ['body' => 'Mi primer comentario'];
 
         $response = $this->actingAs($user)
@@ -56,8 +58,9 @@ class CreateCommentsTest extends TestCase
     public function a_comment_requires_a_body()
     {
 
-        $status = Status::factory()->create();
-        $user = User::factory()->create();
+        $status = Status::factory()->create()->first();
+        $user = User::factory()->create()->first();
+        $user = Auth::loginUsingId($user->id);
         $this->actingAs($user);
 
         $response = $this->postJson(route('statuses.comments.store', $status), ['body'=>'']);
@@ -74,8 +77,9 @@ class CreateCommentsTest extends TestCase
         Event::fake([CommentCreated::class]);
         Broadcast::shouldReceive('socket')->andReturn('socket-id');
 
-        $status = Status::factory()->create();
-        $user = User::factory()->create();
+        $status = Status::factory()->create()->first();
+        $user = User::factory()->create()->first();
+        $user = Auth::loginUsingId($user->id);
         $comment = ['body' => 'Mi primer comentario'];
 
         $this->actingAs($user)

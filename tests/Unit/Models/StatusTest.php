@@ -17,7 +17,7 @@ class StatusTest extends TestCase
      */
     public function a_status_belongs_to_a_user()
     {
-        $status = Status::factory()->create();
+        $status = Status::factory()->create()->first();
 
         $this->assertInstanceOf(User::class, $status->user);
     }
@@ -27,7 +27,7 @@ class StatusTest extends TestCase
      */
     public function a_status_has_many_comments(){
 
-        $status = Status::factory()->create();
+        $status = Status::factory()->create()->first();
 
         Comment::factory()->create([
             'status_id' => $status->id,

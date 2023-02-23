@@ -15,7 +15,7 @@ class UsersCanLikeStatusesTest extends DuskTestCase
     /** @test */
     public function guest_users_cannot_like_statuses()
     {
-        $status = Status::factory()->create();
+        $status = Status::factory()->create()->first();
 
         $this->browse(function (Browser $browser) use ($status) {
             $browser
@@ -29,8 +29,8 @@ class UsersCanLikeStatusesTest extends DuskTestCase
     /** @test */
     public function users_can_like_and_unlike_statuses()
     {
-        $user = User::factory()->create();
-        $status = Status::factory()->create();
+        $user = User::factory()->create()->first();
+        $status = Status::factory()->create()->first();
 
         $this->browse(function (Browser $browser) use($user,$status) {
             $browser
@@ -53,8 +53,8 @@ class UsersCanLikeStatusesTest extends DuskTestCase
     /** @test */
     public function users_can_see_likes_and_unlikes_in_real_time()
     {
-        $user = User::factory()->create();
-        $status = Status::factory()->create();
+        $user = User::factory()->create()->first();
+        $status = Status::factory()->create()->first();
 
         $this->browse(function (Browser $browser1, Browser $browser2) use($user,$status) {
             $browser1->visit('/');

@@ -16,7 +16,7 @@ class UserCanCommentStatusTest extends DuskTestCase
     /** @test */
     public function users_can_see_all_comments()
     {
-        $status = Status::factory()->create();
+        $status = Status::factory()->create()->first();
         $comments = Comment::factory(2)->create(['status_id' => $status->id]);
 
         $this->browse(function (Browser $browser) use($comments, $status){
@@ -35,8 +35,8 @@ class UserCanCommentStatusTest extends DuskTestCase
     /** @test */
     public function authenticated_users_can_comment_statuses()
     {
-        $user = User::factory()->create();
-        $status = Status::factory()->create();
+        $user = User::factory()->create()->first();
+        $status = Status::factory()->create()->first();
 
         $this->browse(function (Browser $browser) use($user, $status){
             $comment = "Mi primer comentario";
@@ -54,8 +54,8 @@ class UserCanCommentStatusTest extends DuskTestCase
     /** @test */
     public function users_can_see_comments_in_real_time()
     {
-        $user = User::factory()->create();
-        $status = Status::factory()->create();
+        $user = User::factory()->create()->first();
+        $status = Status::factory()->create()->first();
 
         $this->browse(function (Browser $browser1, Browser $browser2) use($user, $status){
             $comment = "Mi primer comentario";

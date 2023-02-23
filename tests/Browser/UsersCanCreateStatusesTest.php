@@ -15,7 +15,7 @@ class UsersCanCreateStatusesTest extends DuskTestCase
     /** @test */
     public function users_can_create_statuses()
     {
-        User::factory()->create();
+        User::factory()->create()->first();
 
         $this->browse(function (Browser $browser) {
             $user = User::find(1);
@@ -33,8 +33,8 @@ class UsersCanCreateStatusesTest extends DuskTestCase
     /** @test */
     public function users_can_see_statuses_in_real_time ()
     {
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->create();
+        $user1 = User::factory()->create()->first();
+        $user2 = User::factory()->create()->first();
 
         $this->browse(function (Browser $browser1, Browser $browser2) use($user1, $user2){
             $browser1->loginAs($user1)

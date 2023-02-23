@@ -7,7 +7,6 @@
             <h5 class="card-title"><a href="{{ route('users.show', $user) }}">{{ $user->name }}</a></h5>
             <friendship-btn
                 class="btn btn-primary w-100"
-                id="request-friendship"
                 :recipient="{{ $user }}"
             ></friendship-btn>
         @endif

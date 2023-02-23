@@ -16,8 +16,8 @@ class UsersCanGetTheirNotificationsTest extends DuskTestCase
     /** @test */
     public function user_can_see_their_notifications_in_the_navbar()
     {
-        $user = User::factory()->create();
-        $status = Status::factory()->create();
+        $user = User::factory()->create()->first();
+        $status = Status::factory()->create()->first();
 
         $notification = DatabaseNotification::factory()->create([
             'notifiable_id' => $user->id,
@@ -25,7 +25,7 @@ class UsersCanGetTheirNotificationsTest extends DuskTestCase
                 'message' => 'Haz recibido un like',
                 'link' => route('statuses.show', $status)
             ]
-        ]);
+        ])->first();
 
         $this->browse(function (Browser $browser) use($user, $notification, $status){
             $browser->loginAs($user)
@@ -53,10 +53,10 @@ class UsersCanGetTheirNotificationsTest extends DuskTestCase
     /** @test */
     public function user_can_see_their_like_notifications_in_real_time()
     {
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->create();
+        $user1 = User::factory()->create()->first();
+        $user2 = User::factory()->create()->first();
 
-        $status = Status::factory()->create(['user_id' => $user1->id]);
+        $status = Status::factory()->create(['user_id' => $user1->id])->first();
 
         $this->browse(function (Browser $browser1, Browser $browser2) use($user1, $user2, $status){
 
@@ -78,10 +78,10 @@ class UsersCanGetTheirNotificationsTest extends DuskTestCase
     /** @test */
     public function user_can_see_their_comment_notifications_in_real_time()
     {
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->create();
+        $user1 = User::factory()->create()->first();
+        $user2 = User::factory()->create()->first();
 
-        $status = Status::factory()->create(['user_id' => $user1->id]);
+        $status = Status::factory()->create(['user_id' => $user1->id])->first();
 
         $this->browse(function (Browser $browser1, Browser $browser2) use($user1, $user2, $status){
 

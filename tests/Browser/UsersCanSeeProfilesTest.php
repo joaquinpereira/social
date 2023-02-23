@@ -15,9 +15,9 @@ class UsersCanSeeProfilesTest extends DuskTestCase
     /** @test */
     public function users_can_see_profiles()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->first();
         $statuses = Status::factory(2)->create(['user_id' => $user->id]);
-        $other_status = Status::factory()->create();
+        $other_status = Status::factory(1)->create()->first();
 
         $this->browse(function (Browser $browser) use($user, $statuses, $other_status){
             $browser->visit("/@{$user->name}")

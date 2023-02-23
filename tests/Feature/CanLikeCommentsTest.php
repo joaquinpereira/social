@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Comment;
 use App\Models\User;
+use Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -31,16 +32,17 @@ class CanLikeCommentsTest extends TestCase
     public function an_authenticated_user_can_like_and_unlike_comments()
     {
         Notification::fake();
-
         $this->withoutExceptionHandling();
 
         $user = User::factory()->create()->first();
         $comment = Comment::factory()->create()->first();
 
+        $user_auth = Auth::loginUsingId($user->id);
+
         $this->assertCount(0, $comment->likes);
 
         //like
-        $response = $this->actingAs($user)->postJson(route('comments.likes.store', $comment));
+        $response = $this->actingAs($user_auth)->postJson(route('comments.likes.store', $comment));
         $response->assertJsonFragment([
             'likes_count' => 1
         ]);
@@ -48,7 +50,7 @@ class CanLikeCommentsTest extends TestCase
         $this->assertDatabaseHas('likes', ['user_id' => $user->id,]);
 
         //unlike
-        $response = $this->actingAs($user)->deleteJson(route('comments.likes.destroy', $comment));
+        $response = $this->actingAs($user_auth)->deleteJson(route('comments.likes.destroy', $comment));
         $this->assertCount(0, $comment->fresh()->likes);
         $response->assertJsonFragment([
             'likes_count' => 0

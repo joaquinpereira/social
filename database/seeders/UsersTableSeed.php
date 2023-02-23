@@ -17,7 +17,7 @@ class UsersTableSeed extends Seeder
     {
         User::truncate();
 
-        $user = User::factory()->create(['email'=>'Joaquin@email.com','name'=>'Joaquin']);
+        $user = User::factory()->create(['email'=>'Joaquin@email.com','name'=>'Joaquin'])->first();
 
         Status::factory(3)->create(['user_id' => $user->id]);
         Status::factory(10)->create();

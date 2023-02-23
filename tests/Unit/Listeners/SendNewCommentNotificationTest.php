@@ -20,8 +20,8 @@ class SendNewCommentNotificationTest extends TestCase
     {
         Notification::fake();
 
-        $status = Status::factory()->create();
-        $comment = Comment::factory()->create(['status_id' => $status->id]);
+        $status = Status::factory()->create()->first();
+        $comment = Comment::factory()->create(['status_id' => $status->id])->first();
 
         CommentCreated::dispatch($comment);
 

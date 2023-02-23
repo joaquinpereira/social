@@ -6,10 +6,8 @@ use App\Models\User;
 use App\Events\StatusCreated;
 use App\Http\Resources\StatusResource;
 use App\Models\Status;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
@@ -29,7 +27,8 @@ class CreateStatusTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_create_statuses()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->first();
+        $user = Auth::loginUsingId($user->id);
         $this->actingAs($user);
 
         $response = $this->postJson(route('statuses.store',['body'=>'Mi primer status']));

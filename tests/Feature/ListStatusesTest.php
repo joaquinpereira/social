@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class ListStatusesTest extends TestCase
@@ -16,12 +17,7 @@ class ListStatusesTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $statuses = [];
-        $j = 1;
-        for ($i = 4; $i > 0; $i--){
-            $statuses[$j] = Status::factory()->create(['created_at' => now()->subDays($i)]);
-            $j++;
-        }
+        $statuses = Status::factory(4)->create(['created_at' => now()->subDays(rand(1,10))]);
 
         $response = $this->getJson(route('statuses.index'));
 
@@ -37,7 +33,7 @@ class ListStatusesTest extends TestCase
         ]);
 
         $this->assertEquals(
-            $statuses[4]->body,
+            $statuses->get(0)->body,
             $response->json('data.0.body')
         );
     }
@@ -46,9 +42,11 @@ class ListStatusesTest extends TestCase
     public function can_get_statuses_for_a_specific_user()
     {
         $user = User::factory()->create()->first();
+        $user = Auth::loginUsingId($user->id);
 
-        Status::factory()->create(['user_id' => $user->id, 'created_at' => now()->subDays(2)]);
-        $status = Status::factory()->create(['user_id' => $user->id, 'created_at' => now()->subDays()]);
+        Status::factory(3)->create();
+        Status::factory(3)->create(['user_id' => $user->id, 'created_at' => now()->subDays(rand(2,6))]);
+        $status = Status::factory(1)->create(['user_id' => $user->id, 'created_at' => now()->subDays()])->first();
 
         Status::factory(2)->create();
 
@@ -58,7 +56,7 @@ class ListStatusesTest extends TestCase
         $response->assertSuccessful();
 
         $response->assertJson([
-            'meta' => ['total' => 2]
+            'meta' => ['total' => 4]
         ]);
 
         $response->assertJsonStructure([
@@ -75,7 +73,7 @@ class ListStatusesTest extends TestCase
     /** @test */
     public function can_see_individual_status()
     {
-        $status = Status::factory()->create();
+        $status = Status::factory()->create()->first();
 
         $response = $this->get($status->path());
         $response->assertSee($status->body);

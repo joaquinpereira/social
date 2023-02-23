@@ -15,8 +15,8 @@ class NewCommentNotificationTest extends TestCase
     /** @test */
     public function the_notification_is_stored_in_the_database()
     {
-        $status = Status::factory()->create();
-        $comment = Comment::factory()->create(['status_id' => $status->id]);
+        $status = Status::factory()->create()->first();
+        $comment = Comment::factory()->create(['status_id' => $status->id])->first();
 
         $statusOwner = $status->user;
 

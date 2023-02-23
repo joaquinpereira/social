@@ -20,7 +20,7 @@ class CommentResourceTest extends TestCase
      */
     public function a_comment_resource_must_have_the_necessary_fields()
     {
-        $comment = Comment::factory()->create();
+        $comment = Comment::factory()->create()->first();
 
         $commentResource = CommentResource::make($comment)->resolve();
 

@@ -16,7 +16,7 @@ class CommentTest extends TestCase
     /** @test */
     public function a_comment_belongs_to_a_user()
     {
-        $comment = Comment::factory()->create();
+        $comment = Comment::factory()->create()->first();
 
         $this->assertInstanceOf(User::class, $comment->user);
     }
@@ -24,7 +24,7 @@ class CommentTest extends TestCase
     /** @test */
     public function a_comment_belongs_to_a_status()
     {
-        $comment = Comment::factory()->create();
+        $comment = Comment::factory()->create()->first();
 
         $this->assertInstanceOf(Status::class, $comment->status);
     }
@@ -38,7 +38,7 @@ class CommentTest extends TestCase
     /** @test */
     public function a_commment_must_have_a_path()
     {
-        $comment = Comment::factory()->create();
+        $comment = Comment::factory()->create()->first();
 
         $this->assertEquals(route('statuses.show', $comment->id).'#comment-'.$comment->id, $comment->path());
     }

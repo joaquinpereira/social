@@ -23,7 +23,7 @@ class StatusResourceTest extends TestCase
      */
     public function a_status_resource_must_have_the_necessary_fields()
     {
-        $status = Status::factory()->create();
+        $status = Status::factory()->create()->first();
 
         Comment::factory(2)->create(['status_id' => $status->id]);
 

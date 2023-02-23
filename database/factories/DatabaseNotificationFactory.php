@@ -22,7 +22,7 @@ class DatabaseNotificationFactory extends Factory
             'id' => Str::uuid()->toString(),
             'type' => 'App\\Notifications\\ExampleNotification',
             'notifiable_type' => 'App\\Models\\User',
-            'notifiable_id' => User::factory()->create()->id,
+            'notifiable_id' => User::factory()->create()->first()->id,
             'data' => [
                 'link' => url('/'),
                 'message' => 'Mensaje de la notificación'

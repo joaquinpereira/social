@@ -19,8 +19,8 @@ class SenNewLikeNotificationTest extends TestCase
     {
         Notification::fake();
 
-        $statusOwner = User::factory()->create();
-        $likeSender = User::factory()->create();
+        $statusOwner = User::factory()->create()->first();
+        $likeSender = User::factory()->create()->first();
 
         $status = Status::factory()->create(['user_id' => $statusOwner->id]);
         $status->likes()->create([

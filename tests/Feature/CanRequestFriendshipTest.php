@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\FriendShip;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class CanRequestFriendshipTest extends TestCase
@@ -14,7 +15,7 @@ class CanRequestFriendshipTest extends TestCase
     /** @test */
     public function guests_users_cannot_create_friendship_request()
     {
-        $recipient = User::factory()->create();
+        $recipient = User::factory()->create()->first();
 
         $response = $this->postJson(route('friendships.store', $recipient));
 
@@ -24,12 +25,13 @@ class CanRequestFriendshipTest extends TestCase
     /** @test */
     public function sender_a_can_create_friendship_request_once()
     {
+        $sender = User::factory(1)->create()->first();
+        $recipient = User::factory(1)->create()->first();
 
-        $sender = User::factory()->create();
+        $sender_auth = Auth::loginUsingId($sender->id);
 
-        $recipient = User::factory()->create();
-
-        $this->actingAs($sender)->postJson(route('friendships.store', $recipient));
+        $response = $this->actingAs($sender_auth)->postJson(route('friendships.store', $recipient));
+        $response->assertOk();
 
         $this->assertDatabaseHas('friendships', [
             'sender_id' => $sender->id,
@@ -37,7 +39,7 @@ class CanRequestFriendshipTest extends TestCase
             'status' => 'pending',
         ]);
 
-        $this->actingAs($sender)->postJson(route('friendships.store', $recipient));
+        $this->actingAs($sender_auth)->postJson(route('friendships.store', $recipient));
         $this->assertCount(1, FriendShip::all());
     }
 
@@ -46,11 +48,12 @@ class CanRequestFriendshipTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $sender = User::factory()->create();
+        $sender = User::factory(1)->create()->first();
+        $recipient = User::factory(1)->create()->first();
 
-        $recipient = User::factory()->create();
+        $sender_auth = Auth::loginUsingId($sender->id);
 
-        $response = $this->actingAs($sender)->postJson(route('friendships.store', $recipient));
+        $response = $this->actingAs($sender_auth)->postJson(route('friendships.store', $recipient));
 
         $response->assertJson([
             'friendship_status' => 'pending'
@@ -67,9 +70,10 @@ class CanRequestFriendshipTest extends TestCase
     public function sender_cannot_send_friendship_request_to_itself()
     {
 
-        $sender = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $sender_auth = Auth::loginUsingId($sender->id);
 
-        $response = $this->actingAs($sender)->postJson(route('friendships.store', $sender));
+        $response = $this->actingAs($sender_auth)->postJson(route('friendships.store', $sender));
 
         $response->assertStatus(400);
 
@@ -85,16 +89,17 @@ class CanRequestFriendshipTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $sender = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
-        $recipient = User::factory()->create();
+        $sender_auth = Auth::loginUsingId($sender->id);
 
         FriendShip::create([
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
         ]);
 
-        $response = $this->actingAs($sender)->deleteJson(route('friendships.destroy', $recipient));
+        $response = $this->actingAs($sender_auth)->deleteJson(route('friendships.destroy', $recipient));
 
         $response->assertJson([
             'friendship_status' => 'deleted'
@@ -111,9 +116,10 @@ class CanRequestFriendshipTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $sender = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
-        $recipient = User::factory()->create();
+        $sender_auth = Auth::loginUsingId($sender->id);
 
         FriendShip::create([
             'sender_id' => $sender->id,
@@ -121,7 +127,7 @@ class CanRequestFriendshipTest extends TestCase
             'status' => 'denied'
         ]);
 
-        $response = $this->actingAs($sender)->deleteJson(route('friendships.destroy', $recipient));
+        $response = $this->actingAs($sender_auth)->deleteJson(route('friendships.destroy', $recipient));
 
         $response->assertJson([
             'friendship_status' => 'denied'
@@ -139,9 +145,10 @@ class CanRequestFriendshipTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $sender = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
-        $recipient = User::factory()->create();
+        $recipient = Auth::loginUsingId($recipient->id);
 
         FriendShip::create([
             'sender_id' => $sender->id,
@@ -163,7 +170,7 @@ class CanRequestFriendshipTest extends TestCase
     /** @test */
     public function guests_users_cannot_delete_friendship_request()
     {
-        $recipient = User::factory()->create();
+        $recipient = User::factory()->create()->first();
 
         $response = $this->deleteJson(route('friendships.destroy', $recipient));
 
@@ -175,9 +182,10 @@ class CanRequestFriendshipTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $sender = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
 
-        $recipient = User::factory()->create();
+        $recipient = Auth::loginUsingId($recipient->id);
 
         FriendShip::create([
             'sender_id' => $sender->id,
@@ -202,11 +210,12 @@ class CanRequestFriendshipTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $sender = User::factory()->create();
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
+        $recipient = Auth::loginUsingId($recipient->id);
 
         $sender->sendFriendRequestTo($recipient);
-        FriendShip::factory(2)->create();
+        FriendShip::factory(2)->create()->first();
 
         $this->actingAs($recipient);
 
@@ -226,7 +235,7 @@ class CanRequestFriendshipTest extends TestCase
     /** @test */
     public function guests_users_cannot_accept_friendship_request()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->first();
 
         $response = $this->postJson(route('accept-friendships.store', $user));
 
@@ -238,9 +247,9 @@ class CanRequestFriendshipTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $sender = User::factory()->create();
-
-        $recipient = User::factory()->create();
+        $sender = User::factory()->create()->first();
+        $recipient = User::factory()->create()->first();
+        $recipient = Auth::loginUsingId($recipient->id);
 
         FriendShip::create([
             'sender_id' => $sender->id,
@@ -263,7 +272,7 @@ class CanRequestFriendshipTest extends TestCase
     /** @test */
     public function guests_users_cannot_deny_friend_ship_request()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create()->first();
 
         $response = $this->deleteJson(route('accept-friendships.destroy', $user));
 
