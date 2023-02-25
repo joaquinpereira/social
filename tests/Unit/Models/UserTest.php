@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Models;
 
 use App\Models\FriendShip;
 use App\Models\Status;
@@ -28,15 +28,6 @@ class UserTest extends TestCase
         $user = User::factory()->create()->first();
 
         $this->assertEquals(route('users.show',$user),$user->link());
-    }
-
-    /** @test */
-    public function user_has_an_avatar()
-    {
-        $user = User::factory()->create()->first();
-
-        $this->assertEquals('http://social/avatar.png', $user->avatar());
-        $this->assertEquals('http://social/avatar.png', $user->avatar);
     }
 
     /** @test */

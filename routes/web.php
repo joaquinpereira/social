@@ -24,6 +24,7 @@ Route::delete('comments/{comment}/likes', 'CommentsLikesController@destroy')->na
 
 // Users routes
 Route::get('@{user}', 'UsersController@show')->name('users.show');
+Route::put('users/{user}','UsersController@update')->name('users.update')->middleware('auth');
 
 // Users statuses routes
 Route::get('users/{user}/statuses','UsersStatusController@index')->name('users.statuses.index');

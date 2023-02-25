@@ -24,12 +24,14 @@ import StatusListItem from './components/StatusListItem.vue';
 import FriendshipBtn from './components/FriendshipBtn.vue';
 import AcceptFriendshipBtn from './components/AcceptFriendshipBtn.vue';
 import NotificationList from './components/NotificationList.vue';
+import ProfilePictureBtn from './components/ProfilePictureBtn.vue';
 app.component('status-form', StatusForm);
 app.component('status-list', StatusesList);
 app.component('status-list-item', StatusListItem);
 app.component('friendship-btn', FriendshipBtn);
 app.component('accept-friendship-btn', AcceptFriendshipBtn);
 app.component('notification-list', NotificationList);
+app.component('profile-picture-btn', ProfilePictureBtn);
 
 import auth from './mixins/auth';
 app.mixin(auth);

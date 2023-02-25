@@ -1,5 +1,8 @@
 <div class="card bg-light shadow-sm">
-    <img src="{{$user->avatar}}" alt="{{$user->name}}" class="card-img-top">
+    <profile-picture-btn
+        :user="{{$user}}"
+    ></profile-picture-btn>
+
     <div class="card-body">
         @if(auth()->id() === $user->id)
             <h5 class="card-title"><a href="{{ route('users.show', $user) }}">{{ $user->name }}</a> <small>Eres tú</small></h5>
@@ -12,3 +15,8 @@
         @endif
     </div>
 </div>
+
+@push('scripts_js')
+    @vite('resources/js/jquery.min.js')
+    @vite('resources/js/bootstrap.bundle.min.js')
+@endpush

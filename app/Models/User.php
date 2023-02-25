@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'avatar'
     ];
 
     /**
@@ -34,8 +36,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    protected $appends = ['avatar'];
 
     /**
      * The attributes that should be cast.
@@ -71,14 +71,9 @@ class User extends Authenticatable
         return route('users.show', $this);
     }
 
-    public function avatar()
-    {
-        return 'http://social/avatar.png';
-    }
-
     public function getAvatarAttribute()
     {
-        return $this->avatar();
+        return Storage::url($this->attributes['avatar']);
     }
 
     public function sendFriendRequestTo($recipient)
@@ -119,5 +114,13 @@ class User extends Authenticatable
             ->wherePivot('status','accepted')->get();
 
         return $senderFriends->merge($recipientFriends);
+    }
+
+    public function savePicture($avatar)
+    {
+        $path = Storage::put('public/users', $avatar);
+        Storage::delete($this->avatar);
+        $this->avatar = $path;
+        $this->save();
     }
 }

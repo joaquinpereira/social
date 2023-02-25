@@ -9,6 +9,8 @@
 
     @vite('resources/sass/app.scss')
 
+    @stack('scripts_css')
+
     <title>Social app</title>
 </head>
 <body>
@@ -21,5 +23,8 @@
     </div>
 
     @vite('resources/js/app.js')
+
+    @stack('scripts_js')
+
 </body>
 </html>

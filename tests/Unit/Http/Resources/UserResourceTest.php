@@ -26,7 +26,7 @@ class UserResourceTest extends TestCase
 
         $this->assertEquals($user->link(), $userResource['link']);
 
-        $this->assertEquals($user->avatar(), $userResource['avatar']);
+        $this->assertEquals($user->avatar, $userResource['avatar']);
 
     }
 }

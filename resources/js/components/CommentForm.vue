@@ -3,7 +3,7 @@
         <form @submit.prevent="addComment">
             <div class="d-flex align-items-center">
 
-                <img class="avatar_comment rounded shadow-sm float-left me-2" src='http://social/avatar.png' :alt="currentUser.name"/>
+                <img class="avatar_comment rounded shadow-sm float-left me-2" :src='currentUser.avatar' :alt="currentUser.name"/>
 
                 <textarea
                     v-model="newComment"
